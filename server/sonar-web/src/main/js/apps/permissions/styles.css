@@ -1,0 +1,13 @@
+.permissions-table {}
+
+.permissions-table > tbody > tr > td {
+  border-bottom: 10px solid #fff !important;
+}
+
+.permissions-table .permission-column {
+  width: 1px;
+}
+
+.permissions-table .permission-column-inner {
+  width: 112px;
+}

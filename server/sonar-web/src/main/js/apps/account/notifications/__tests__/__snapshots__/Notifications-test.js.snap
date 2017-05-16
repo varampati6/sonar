@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match snapshot 1`] = `
+<div
+  className="account-body account-container"
+>
+  <HelmetWrapper
+    title="my_account.notifications"
+  />
+  <p
+    className="big-spacer-bottom"
+  >
+    notification.dispatcher.information
+  </p>
+  <Connect(GlobalNotifications) />
+  <hr
+    className="account-separator"
+  />
+  <Connect(Projects) />
+</div>
+`;

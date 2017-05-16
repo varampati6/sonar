@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render 1`] = `
+<div>
+  <ConciseIssue
+    issue={
+      Object {
+        "key": "foo",
+      }
+    }
+    previousIssue={null}
+    scroll={[Function]}
+    selected={false}
+  />
+  <ConciseIssue
+    issue={
+      Object {
+        "key": "bar",
+      }
+    }
+    previousIssue={
+      Object {
+        "key": "foo",
+      }
+    }
+    scroll={[Function]}
+    selected={false}
+  />
+</div>
+`;

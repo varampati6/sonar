@@ -1,0 +1,36 @@
+<header class="page-header">
+  <h1 class="page-title">{{t 'update_center.page'}}</h1>
+  <p class="page-description">{{t 'update_center.page.description'}}</p>
+</header>
+
+{{#any installing updating uninstalling}}
+  <div class="js-pending panel panel-warning big-spacer-bottom">
+    <div class="display-inline-block">
+      <p>SonarQube needs to be restarted in order to</p>
+      <ul class="list-styled spacer-top">
+        {{#if installing}}
+          <li>
+            install
+            <strong class="big text-success little-spacer-left little-spacer-right">{{installing}}</strong> plugins
+          </li>
+        {{/if}}
+        {{#if updating}}
+          <li>
+            update
+            <strong class="big text-success little-spacer-left little-spacer-right">{{updating}}</strong> plugins
+          </li>
+        {{/if}}
+        {{#if uninstalling}}
+          <li>
+            uninstall
+            <strong class="big text-danger little-spacer-left little-spacer-right">{{uninstalling}}</strong> plugins
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+    <div class="pull-right">
+      <button class="js-restart">Restart</button>
+      <button class="js-cancel-all button-red">Revert</button>
+    </div>
+  </div>
+{{/any}}

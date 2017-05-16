@@ -1,0 +1,151 @@
+.boxed-group {
+  margin-bottom: 20px;
+  border: 1px solid #e6e6e6;
+  border-radius: 2px;
+  background-color: #fff;
+}
+
+.boxed-group > h2 {
+  line-height: 24px;
+  padding: 15px 20px 0;
+}
+
+.boxed-group hr {
+  height: 0;
+  border-top: 1px solid #efefef;
+  margin: 15px -20px;
+}
+
+.boxed-group-header {
+  padding: 15px 20px 0;
+}
+
+.boxed-group-header > h2 {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 24px;
+}
+
+.boxed-group-header [class^="icon-"] {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.boxed-group-actions {
+  float: right;
+  margin-top: 15px;
+  margin-right: 20px;
+}
+
+.boxed-group-inner {
+  padding: 15px 20px;
+}
+
+.boxed-group-inner:empty {
+  padding-top: 0;
+}
+
+.boxed-group-list {
+  margin-top: -8px;
+  margin-bottom: -8px;
+}
+
+.boxed-group-list > li {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 8px 20px;
+}
+
+.boxed-group-loading {
+  position: relative;
+  transition: border-color 0.25s;
+}
+
+.boxed-group-loading:before,
+.boxed-group-loading:after {
+  position: absolute;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  content: '';
+}
+
+.boxed-group-loading:before {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-top-color: #4b9fd5;
+  border-right-color: #4b9fd5;
+  animation: 3s top-left-border 0s infinite;
+}
+
+.boxed-group-loading:after {
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+  border-bottom-color: #4b9fd5;
+  border-left-color: #4b9fd5;
+  animation: 3s border-bottom-border 0s infinite;
+}
+
+@keyframes top-left-border {
+  0% {
+    width: 0;
+    height: 0;
+  }
+
+  25% {
+    width: 100%;
+    height: 0;
+  }
+
+  50% {
+    width: 100%;
+    height: 100%;
+  }
+
+  75% {
+    width: 100%;
+    height: 100%;
+  }
+
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@keyframes border-bottom-border {
+  0% {
+    width: 0;
+    height: 0;
+    border-width: 0;
+  }
+
+  25% {
+    width: 0;
+    height: 0;
+    border-width: 0;
+  }
+
+  50% {
+    width: 0;
+    height: 0;
+    border-width: 0;
+  }
+
+  51% {
+    border-width: 2px;
+  }
+
+  75% {
+    width: 100%;
+    height: 0;
+  }
+
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,79 @@
+<h2 class="spacer-bottom">Tokens</h2>
+
+<div class="big-spacer-bottom big-spacer-right markdown">
+  <p>{{t 'my_account.tokens_description'}}</p>
+</div>
+
+{{#notNull tokens}}
+  <table class="data">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-right">Created</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each tokens}}
+      <tr>
+        <td>
+          <div title="{{name}}">
+            {{limitString name}}
+          </div>
+        </td>
+        <td class="thin nowrap text-right">
+          {{d createdAt}}
+        </td>
+        <td class="thin nowrap text-right">
+          <div class="big-spacer-left">
+            <form class="js-revoke-token-form" data-token="{{name}}">
+              {{#if deleting}}
+                <button class="button-red active input-small">Sure?</button>
+              {{else}}
+                <button class="button-red input-small">Revoke</button>
+              {{/if}}
+            </form>
+          </div>
+        </td>
+      </tr>
+    {{else}}
+      <tr>
+        <td colspan="3">
+          <span class="note">No tokens</span>
+        </td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+{{/notNull}}
+
+{{#each errors}}
+  <div class="alert alert-danger">{{msg}}</div>
+{{/each}}
+
+<form class="js-generate-token-form spacer-top panel bg-muted">
+  <label>Generate New Token:</label>
+  <input type="text" required maxlength="100" placeholder="Enter Token Name">
+  <button>Generate</button>
+</form>
+
+{{#if newToken}}
+  <div class="panel panel-white big-spacer-top">
+    <div class="alert alert-warning">
+      New token "{{limitString newToken.name}}" has been created. Make sure you copy it now, you won’t be able to see it
+      again!
+    </div>
+
+    <table class="data">
+      <tr>
+
+        <td class="thin">
+          <button class="js-copy-to-clipboard" data-clipboard-text="{{newToken.token}}">Copy</button>
+        </td>
+        <td class="nowrap">
+          <div class="monospaced text-success">{{newToken.token}}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+{{/if}}

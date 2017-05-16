@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render active tag 1`] = `
+<li>
+  <a
+    className="active"
+    href="#"
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+  >
+    <i
+      className="icon-checkbox icon-checkbox-checked"
+    />
+     
+    mytag
+  </a>
+</li>
+`;
+
+exports[`should render custom tag 1`] = `
+<li>
+  <a
+    className=""
+    href="#"
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+  >
+    <i
+      className="icon-checkbox"
+    />
+     
+    + 
+    mytag
+  </a>
+</li>
+`;
+
+exports[`should render selected tag 1`] = `
+<li>
+  <a
+    className=""
+    href="#"
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+  >
+    <i
+      className="icon-checkbox icon-checkbox-checked"
+    />
+     
+    mytag
+  </a>
+</li>
+`;
+
+exports[`should render standard tag 1`] = `
+<li>
+  <a
+    className=""
+    href="#"
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+  >
+    <i
+      className="icon-checkbox"
+    />
+     
+    mytag
+  </a>
+</li>
+`;

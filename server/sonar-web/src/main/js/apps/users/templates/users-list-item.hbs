@@ -1,0 +1,72 @@
+<td class="thin nowrap">
+  <div>{{avatarHelper email name 36}}</div>
+</td>
+
+<td>
+  <div>
+    <strong class="js-user-name">{{name}}</strong>
+    <span class="js-user-login note little-spacer-left">{{login}}</span>
+  </div>
+
+  {{#if email}}
+    <div class="js-user-email little-spacer-top">{{email}}</div>
+  {{/if}}
+
+  {{#unless local}}
+    {{#notEq externalProvider 'sonarqube'}}
+      <div class="js-user-identity-provider little-spacer-top">
+        {{#if identityProvider}}
+          <div class="identity-provider" style="background-color: {{identityProvider.backgroundColor}}">
+            <img src="{{link identityProvider.iconPath}}" width="14" height="14"/>
+            {{externalIdentity}}
+          </div>
+        {{else}}
+          {{externalProvider}}: {{externalIdentity}}
+        {{/if}}
+      </div>
+    {{/notEq}}
+  {{/unless}}
+</td>
+
+<td>
+  <ul>
+    {{#each firstScmAccounts}}
+      <li class="little-spacer-bottom">{{this}}</li>
+    {{/each}}
+    {{#gt moreScmAccountsCount 0}}
+      <li class="little-spacer-bottom">
+        <a class="js-user-more-scm" href="#">{{moreScmAccountsCount}} more</a>
+      </li>
+    {{/gt}}
+  </ul>
+</td>
+
+{{#unless customOrganizations}}
+  <td>
+    <ul>
+      {{#each firstGroups}}
+        <li class="little-spacer-bottom">{{this}}</li>
+      {{/each}}
+      <li class="little-spacer-bottom">
+        {{#gt moreGroupsCount 0}}
+          <a class="js-user-more-groups spacer-right" href="#">{{moreGroupsCount}} more</a>
+        {{/gt}}
+        <a class="js-user-groups icon-bullet-list" title="Update Groups" data-toggle="tooltip" href="#"></a>
+      </li>
+    </ul>
+  </td>
+{{/unless}}
+
+<td>
+  {{tokensCount}}
+  <a class="js-user-tokens spacer-left icon-bullet-list" title="Update Tokens" data-toggle="tooltip" href="#"></a>
+</td>
+
+<td class="thin nowrap text-right">
+  <a class="js-user-update icon-edit little-spacer-right" title="Update Details" data-toggle="tooltip" href="#"></a>
+  {{#if local}}
+    <a class="js-user-change-password icon-lock little-spacer-right" title="Change Password" data-toggle="tooltip"
+       href="#"></a>
+  {{/if}}
+  <a class="js-user-deactivate icon-delete" title="Deactivate" data-toggle="tooltip" href="#"></a>
+</td>

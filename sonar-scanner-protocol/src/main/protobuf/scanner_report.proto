@@ -1,0 +1,274 @@
+// SonarQube, open source software quality management tool.
+// Copyright (C) 2008-2016 SonarSource
+// mailto:contact AT sonarsource DOT com
+//
+// SonarQube is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 3 of the License, or (at your option) any later version.
+//
+// SonarQube is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+// IMPORTANT
+// This is beta version of specification. It will evolve during next
+// releases and is not forward-compatible yet.
+
+syntax = "proto3";
+
+import "constants.proto";
+
+option java_package = "org.sonar.scanner.protocol.output";
+option optimize_for = SPEED;
+
+message Metadata {
+  int64 analysis_date = 1;
+  // TODO should we keep this project_key here or not ? Because it's a duplication of Component.key
+  string organization_key = 2;
+  string project_key = 3;
+  string branch = 4;
+  int32 root_component_ref = 5;
+  bool cross_project_duplication_activated = 6;
+  map<string, QProfile> qprofiles_per_language = 7;
+
+  message QProfile {
+    string key = 1;
+    string name = 2;
+    string language = 3;
+    int64 rulesUpdatedAt = 4;
+  }
+}
+
+message ContextProperty {
+  string key = 1;
+  string value = 2;
+}
+
+message ActiveRule {
+  string rule_repository = 1;
+  string rule_key = 2;
+  Severity severity = 3;
+  map<string,string> params_by_key = 4;
+  int64 createdAt = 5;
+}
+
+message ComponentLink {
+  ComponentLinkType type = 1;
+  string href = 2;
+  
+  enum ComponentLinkType {
+    UNSET = 0;
+	  HOME = 1;
+	  SCM = 2;
+	  SCM_DEV = 3;
+	  ISSUE = 4;
+	  CI = 5;
+	}
+}
+
+message Component {
+  int32 ref = 1;
+  string path = 2;
+  string name = 3;
+  ComponentType type = 4;
+  bool is_test = 5;
+  string language = 6;
+  repeated int32 child_ref = 7 [packed = true];
+  repeated ComponentLink link = 8;
+  // Only available on PROJECT and MODULE types
+  string version = 9;
+  // Only available on PROJECT and MODULE types
+  // TODO rename this property -> moduleKey ?
+  string key = 10;
+  // Only available on FILE type, should always be at least 1
+  int32 lines = 11;
+  // Only available on PROJECT and MODULE types
+  string description = 12;
+  
+	enum ComponentType {
+	  UNSET = 0;
+	  PROJECT = 1;
+	  MODULE = 2;
+	  DIRECTORY = 3;
+	  FILE = 4;
+	}
+	
+}
+
+message Measure {
+  string metric_key = 1;
+  oneof value {
+	  BoolValue boolean_value = 2;
+	  IntValue int_value = 3;
+	  LongValue long_value = 4;
+	  DoubleValue double_value = 5;
+	  StringValue string_value = 6;
+  }
+  
+  message BoolValue {
+    bool value = 1;
+    string data = 2;
+  }
+  
+  message IntValue {
+    int32 value = 1;
+    string data = 2;
+  }
+  
+  message LongValue {
+    int64 value = 1;
+    string data = 2;
+  }
+  
+  message DoubleValue {
+    double value = 1;
+    string data = 2;
+  }
+  
+  message StringValue {
+    string value = 1;
+  }
+}
+
+message Issue {
+  string rule_repository = 1;
+  string rule_key = 2;
+  // Only when issue component is a file. Can also be empty for a file if this is an issue global to the file.
+  string msg = 3;
+  Severity severity = 4;
+  double gap = 5;
+  // Only when issue component is a file. Can also be empty for a file if this is an issue global to the file.
+  // Will be identical to the first location of the first flow
+  TextRange text_range = 6;
+  repeated Flow flow = 7;
+}
+
+message IssueLocation {
+  int32 component_ref = 1;
+  // Only when component is a file. Can be empty for a file if this is an issue global to the file.
+  TextRange text_range = 2;
+  string msg = 3;
+}
+
+message Flow {
+  repeated IssueLocation location = 1;
+}
+
+message Changesets {
+  int32 component_ref = 1;
+  // If set to true then it means changeset attribute is empty and compute engine should copy data from previous analysis
+  bool copy_from_previous = 2;
+  repeated Changeset changeset = 3;
+  // if changesetIndexByLine[5] = 2 then it means that changeset[2] is the last one on line 6
+  repeated int32 changesetIndexByLine = 4 [packed = true];
+
+  message Changeset {
+    string revision = 1;
+    string author = 2;
+    int64 date = 3;
+  }
+}
+
+message Duplicate {
+  // Will be 0 when duplicate is in the same file
+  int32 other_file_ref = 1;
+  // Only start_line and end_line are provided since we dont support "precise" duplication location.
+  TextRange range = 2;
+}
+
+message Duplication {
+  // Origin position in current file. Only start_line and end_line are provided since we dont support "precise" duplication location.
+  TextRange origin_position = 1;
+  repeated Duplicate duplicate = 2;
+}
+
+// Used for cross project duplication
+message CpdTextBlock {
+  string hash = 1;
+  int32 start_line = 2;
+  int32 end_line = 3;
+  int32 start_token_index = 4;
+  int32 end_token_index = 5;
+}
+
+// Lines start at 1 and line offsets start at 0
+message TextRange {
+  int32 start_line = 1;
+  // End line (inclusive)
+  int32 end_line = 2;
+  int32 start_offset = 3;
+  int32 end_offset = 4;
+}
+
+message Symbol {
+  TextRange declaration = 1;
+  repeated TextRange reference = 2;
+}
+
+// Only FILE component has coverage information, and only executable lines should contains this information.
+message LineCoverage {
+  int32 line = 1;
+
+  // Number of conditions to cover (if set, the value must be greater than 0)
+  int32 conditions = 2;
+  // Is the line has been touched by a unit test ? Returning false means that no test has touched this executable line.
+  oneof has_hits {
+    bool hits = 3;
+  }
+  // Number of conditions covered by tests
+  oneof has_covered_conditions {
+    int32 covered_conditions = 5;
+  }
+}
+
+// Must be sorted by line and start offset
+message SyntaxHighlightingRule {
+  TextRange range = 1;
+  HighlightingType type = 2;
+  
+  enum HighlightingType {
+    UNSET = 0;
+	  ANNOTATION = 1;
+	  CONSTANT = 2;
+	  COMMENT = 3;
+	  CPP_DOC = 4;
+	  STRUCTURED_COMMENT = 5;
+	  KEYWORD = 6;
+	  HIGHLIGHTING_STRING = 7;
+	  KEYWORD_LIGHT = 8;
+	  PREPROCESS_DIRECTIVE = 9;
+	}
+}
+
+message Test {
+  string name = 1;
+  TestStatus status = 2;
+  int64 duration_in_ms = 3;
+  string stacktrace = 4;
+  string msg = 5;
+  
+	enum TestStatus {
+	  UNSET = 0;
+	  OK = 1;
+	  FAILURE = 2;
+	  ERROR = 3;
+	  SKIPPED = 4;
+	}
+}
+
+message CoverageDetail {
+  string test_name = 1;
+  repeated CoveredFile covered_file = 2;
+
+  message CoveredFile {
+    int32 file_ref = 1;
+    repeated int32 covered_line = 2 [packed = true];
+  }
+}

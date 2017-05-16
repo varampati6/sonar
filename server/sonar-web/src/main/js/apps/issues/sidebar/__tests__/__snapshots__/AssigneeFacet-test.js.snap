@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render 1`] = `
+<FacetBox
+  property="assignees"
+>
+  <FacetHeader
+    name="issues.facet.assignees"
+    onClear={[Function]}
+    onClick={[Function]}
+    open={true}
+    values={0}
+  />
+  <FacetItemsList>
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="unassigned"
+      onClick={[Function]}
+      stat={5}
+      value=""
+    />
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name={
+        <span>
+          <Connect(Avatar)
+            className="little-spacer-right"
+            hash="avatart-foo"
+            name="name-foo"
+            size={16}
+          />
+          name-foo
+        </span>
+      }
+      onClick={[Function]}
+      stat={13}
+      value="foo"
+    />
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="bar"
+      onClick={[Function]}
+      stat={7}
+      value="bar"
+    />
+  </FacetItemsList>
+  <FacetFooter
+    onSearch={[Function]}
+    onSelect={[Function]}
+    renderOption={[Function]}
+  />
+</FacetBox>
+`;
+
+exports[`should render footer select option 1`] = `
+<span>
+  <Connect(Avatar)
+    className="little-spacer-right"
+    hash="avatar-foo"
+    name="name-foo"
+    size={16}
+  />
+  name-foo
+</span>
+`;
+
+exports[`should render without stats 1`] = `
+<FacetBox
+  property="assignees"
+>
+  <FacetHeader
+    name="issues.facet.assignees"
+    onClear={[Function]}
+    onClick={[Function]}
+    open={true}
+    values={0}
+  />
+</FacetBox>
+`;
+
+exports[`should select unassigned 1`] = `
+<FacetBox
+  property="assignees"
+>
+  <FacetHeader
+    name="issues.facet.assignees"
+    onClear={[Function]}
+    onClick={[Function]}
+    open={true}
+    values={1}
+  />
+  <FacetItemsList>
+    <FacetItem
+      active={true}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="unassigned"
+      onClick={[Function]}
+      stat={5}
+      value=""
+    />
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name={
+        <span>
+          <Connect(Avatar)
+            className="little-spacer-right"
+            hash="avatart-foo"
+            name="name-foo"
+            size={16}
+          />
+          name-foo
+        </span>
+      }
+      onClick={[Function]}
+      stat={13}
+      value="foo"
+    />
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="bar"
+      onClick={[Function]}
+      stat={7}
+      value="bar"
+    />
+  </FacetItemsList>
+  <FacetFooter
+    onSearch={[Function]}
+    onSelect={[Function]}
+    renderOption={[Function]}
+  />
+</FacetBox>
+`;
+
+exports[`should select user 1`] = `
+<FacetBox
+  property="assignees"
+>
+  <FacetHeader
+    name="issues.facet.assignees"
+    onClear={[Function]}
+    onClick={[Function]}
+    open={true}
+    values={1}
+  />
+  <FacetItemsList>
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="unassigned"
+      onClick={[Function]}
+      stat={5}
+      value=""
+    />
+    <FacetItem
+      active={true}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name={
+        <span>
+          <Connect(Avatar)
+            className="little-spacer-right"
+            hash="avatart-foo"
+            name="name-foo"
+            size={16}
+          />
+          name-foo
+        </span>
+      }
+      onClick={[Function]}
+      stat={13}
+      value="foo"
+    />
+    <FacetItem
+      active={false}
+      disabled={false}
+      facetMode="count"
+      halfWidth={false}
+      name="bar"
+      onClick={[Function]}
+      stat={7}
+      value="bar"
+    />
+  </FacetItemsList>
+  <FacetFooter
+    onSearch={[Function]}
+    onSelect={[Function]}
+    renderOption={[Function]}
+  />
+</FacetBox>
+`;

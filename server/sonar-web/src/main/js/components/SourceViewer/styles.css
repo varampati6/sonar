@@ -1,0 +1,19 @@
+.issue-location {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  background-color: #ffeaea;
+  transition: background-color 0.3s ease;
+}
+
+.issue-location.highlighted {
+  border-color: #e1e1f2;
+  background-color: #e1e1f2;
+}
+
+.issue-location.selected {
+  border-color: #f4b1b0;
+  background-color: #f4b1b0;
+}

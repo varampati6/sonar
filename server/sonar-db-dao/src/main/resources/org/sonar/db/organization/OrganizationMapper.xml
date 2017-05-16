@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sonar.db.organization.OrganizationMapper">
+  <sql id="selectColumns">
+    org.uuid as "uuid",
+    org.kee as "key",
+    org.name as "name",
+    org.description as "description",
+    org.url as "url",
+    org.avatar_url as "avatarUrl",
+    org.guarded as "guarded",
+    org.user_id as "userId",
+    org.created_at as "createdAt",
+    org.updated_at as "updatedAt"
+  </sql>
+
+  <sql id="defaultTemplatesColumns">
+    org.default_perm_template_project as "projectUuid",
+    org.default_perm_template_view as "viewUuid"
+  </sql>
+
+  <select id="selectByUuid" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    from organizations org
+    where
+      org.uuid = #{uuid, jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDefaultTemplatesByUuid" resultType="org.sonar.db.organization.DefaultTemplates">
+    select
+      <include refid="defaultTemplatesColumns"/>
+    from organizations org
+    where
+      org.uuid = #{uuid, jdbcType=VARCHAR}
+      and org.default_perm_template_project is not null
+  </select>
+
+  <select id="selectByKey" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    from organizations org
+    where
+      org.kee = #{key, jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUuids" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    from organizations org
+    where
+      org.uuid in
+        <foreach collection="uuids" open="(" close=")" item="uuid" separator=",">
+          #{uuid, jdbcType=VARCHAR}
+        </foreach>
+  </select>
+
+  <select id="countByQuery" resultType="int">
+    select count(org.uuid)
+    <include refid="sqlSelectByQuery" />
+  </select>
+
+  <select id="selectByQuery" parameterType="map" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    <include refid="sqlSelectByQuery" />
+    order by
+      org.created_at desc
+    limit #{pagination.pageSize,jdbcType=INTEGER} offset #{pagination.offset,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByQuery" parameterType="map" resultType="Organization" databaseId="mssql">
+    select * from (
+      select row_number() over(order by org.created_at desc) as number,
+        <include refid="selectColumns"/>
+      <include refid="sqlSelectByQuery" />
+    ) as query
+    where
+      query.number between #{pagination.startRowNumber,jdbcType=INTEGER} and #{pagination.endRowNumber,jdbcType=INTEGER}
+    order by
+      query.createdAt desc
+  </select>
+
+  <select id="selectByQuery" parameterType="map" resultType="Organization" databaseId="oracle">
+    select * from (
+      select rownum as rn, t.* from (
+        select
+          <include refid="selectColumns"/>
+        <include refid="sqlSelectByQuery" />
+        ORDER BY org.created_at desc
+      ) t
+    ) t
+    where
+      t.rn between #{pagination.startRowNumber,jdbcType=INTEGER} and #{pagination.endRowNumber,jdbcType=INTEGER}
+  </select>
+
+  <sql id="sqlSelectByQuery">
+    from organizations org
+    <where>
+      <if test="query.keys != null">
+        org.kee in
+          <foreach collection="query.keys" open="(" close=")" item="key" separator=",">
+            #{key, jdbcType=VARCHAR}
+          </foreach>
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectByPermission" parameterType="map" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    from organizations org
+    inner join user_roles u on
+      u.organization_uuid = org.uuid
+      and u.user_id = #{userId,jdbcType=INTEGER}
+      and u.resource_id is null
+      and u.role = #{permission,jdbcType=VARCHAR}
+    union
+    select
+      <include refid="selectColumns"/>
+    from organizations org
+    inner join group_roles g on
+      g.organization_uuid = org.uuid
+      and g.resource_id is null
+      and g.role = #{permission,jdbcType=VARCHAR}
+    inner join groups_users gu on
+      gu.group_id = g.group_id
+      and gu.user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectOrganizationsWithoutLoadedTemplate" parameterType="map" resultType="Organization">
+    select
+      <include refid="selectColumns"/>
+    <include refid="sqlSelectOrganizationsWithoutLoadedTemplate"/>
+    order by
+      org.created_at asc
+    limit #{pagination.pageSize,jdbcType=INTEGER} offset #{pagination.offset,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectOrganizationsWithoutLoadedTemplate" parameterType="map" resultType="Organization" databaseId="mssql">
+    select * from (
+      select
+        row_number() over(order by org.created_at asc) as number,
+        <include refid="selectColumns"/>
+      <include refid="sqlSelectOrganizationsWithoutLoadedTemplate"/>
+    ) as query
+    where
+      query.number between #{pagination.startRowNumber,jdbcType=INTEGER} and #{pagination.endRowNumber,jdbcType=INTEGER}
+    order by
+      query.createdAt asc
+  </select>
+
+  <select id="selectOrganizationsWithoutLoadedTemplate" parameterType="map" resultType="Organization" databaseId="oracle">
+    select * from (
+      select rownum as rn, t.* from (
+        select
+          <include refid="selectColumns"/>
+        <include refid="sqlSelectOrganizationsWithoutLoadedTemplate"/>
+        order by
+          org.created_at asc
+      ) t
+    ) t
+    where
+      t.rn between #{pagination.startRowNumber,jdbcType=INTEGER} and #{pagination.endRowNumber,jdbcType=INTEGER}
+  </select>
+
+  <sql id="sqlSelectOrganizationsWithoutLoadedTemplate">
+    from
+      organizations org
+    where
+      not exists (
+        select
+          1
+        from
+          loaded_templates lt
+        where
+          lt.template_type=#{loadedTemplateType,jdbcType=VARCHAR}
+          and lt.kee=org.uuid
+      )
+  </sql>
+
+  <select id="selectDefaultGroupIdByUuid" resultType="Integer">
+    select org.default_group_id
+    from organizations org
+    where
+    org.uuid = #{uuid, jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectNewProjectPrivateByUuid" resultType="Boolean">
+    select org.new_project_private
+    from organizations org
+    where
+    org.uuid = #{uuid, jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insert" parameterType="map" useGeneratedKeys="false">
+    insert into organizations
+    (
+      uuid,
+      kee,
+      name,
+      description,
+      url,
+      avatar_url,
+      guarded,
+      new_project_private,
+      user_id,
+      created_at,
+      updated_at
+    )
+    values
+    (
+      #{organization.uuid, jdbcType=VARCHAR},
+      #{organization.key, jdbcType=VARCHAR},
+      #{organization.name, jdbcType=VARCHAR},
+      #{organization.description, jdbcType=VARCHAR},
+      #{organization.url, jdbcType=VARCHAR},
+      #{organization.avatarUrl, jdbcType=VARCHAR},
+      #{organization.guarded, jdbcType=BOOLEAN},
+      #{newProjectPrivate, jdbcType=BOOLEAN},
+      #{organization.userId, jdbcType=INTEGER},
+      #{organization.createdAt, jdbcType=BIGINT},
+      #{organization.updatedAt, jdbcType=BIGINT}
+    )
+  </insert>
+
+  <update id="update" parameterType="Organization">
+    update organizations
+    set
+      name = #{organization.name, jdbcType=VARCHAR},
+      description = #{organization.description, jdbcType=VARCHAR},
+      url = #{organization.url, jdbcType=VARCHAR},
+      avatar_url = #{organization.avatarUrl, jdbcType=VARCHAR},
+      updated_at = #{organization.updatedAt, jdbcType=BIGINT}
+    where
+      uuid = #{organization.uuid, jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateDefaultTemplates">
+    update organizations
+    set
+      default_perm_template_project = #{defaultTemplates.projectUuid, jdbcType=VARCHAR},
+      default_perm_template_view = #{defaultTemplates.viewUuid, jdbcType=VARCHAR},
+      updated_at = #{now, jdbcType=BIGINT}
+    where
+      uuid = #{organizationUuid, jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateDefaultGroupId">
+    update organizations
+    set
+      default_group_id = #{defaultGroupId, jdbcType=INTEGER},
+      updated_at = #{now, jdbcType=BIGINT}
+    where
+      uuid = #{organizationUuid, jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateNewProjectPrivate">
+    update organizations
+    set
+      new_project_private = #{newProjectPrivate, jdbcType=INTEGER},
+      updated_at = #{now, jdbcType=BIGINT}
+    where
+      uuid = #{organizationUuid, jdbcType=VARCHAR}
+  </update>
+
+  <delete id="deleteByUuid">
+    delete from organizations
+    where
+      uuid = #{uuid, jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

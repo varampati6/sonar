@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render one flow 1`] = `
+<div
+  className="concise-issue-locations pull-right"
+>
+  <ConciseIssueLocationBadge
+    count={3}
+    onClick={[Function]}
+    selected={false}
+  />
+</div>
+`;
+
+exports[`should render secondary locations 1`] = `
+<div
+  className="concise-issue-locations pull-right"
+>
+  <ConciseIssueLocationBadge
+    count={3}
+    selected={true}
+  />
+</div>
+`;
+
+exports[`should render several flows 1`] = `
+<div
+  className="concise-issue-locations pull-right"
+>
+  <ConciseIssueLocationBadge
+    count={3}
+    onClick={[Function]}
+    selected={false}
+  />
+  <ConciseIssueLocationBadge
+    count={2}
+    onClick={[Function]}
+    selected={false}
+  />
+  <ConciseIssueLocationBadge
+    count={3}
+    onClick={[Function]}
+    selected={false}
+  />
+</div>
+`;

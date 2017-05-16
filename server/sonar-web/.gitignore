@@ -1,0 +1,24 @@
+# nodeJS downloaded by Maven
+node/
+
+# nodeJS dependencies
+node_modules/
+
+# npm logs
+npm-debug.log*
+npm.tar.gz
+
+# VS Code
+.vscode/
+
+# build
+build/
+src/main/webapp/js/
+src/main/webapp/css/
+src/main/webapp/index.html
+src/main/webapp/WEB-INF/lib/*.jar
+
+# tests
+src/test/json/**/*.png
+lcov.info
+.nyc_output

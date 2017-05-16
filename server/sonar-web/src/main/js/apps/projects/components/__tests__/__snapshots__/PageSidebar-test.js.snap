@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should handle \`view\` and \`visualization\` 1`] = `undefined`;
+
+exports[`should handle \`view\` and \`visualization\` 2`] = `
+<div
+  className="projects-facets-reset"
+>
+  <Link
+    className="button button-red"
+    onlyActiveOnIndex={false}
+    style={Object {}}
+    to={
+      Object {
+        "pathname": "/projects",
+        "query": Object {
+          "view": "visualizations",
+          "visualization": "bugs",
+        },
+      }
+    }
+  >
+    clear_all_filters
+  </Link>
+</div>
+`;

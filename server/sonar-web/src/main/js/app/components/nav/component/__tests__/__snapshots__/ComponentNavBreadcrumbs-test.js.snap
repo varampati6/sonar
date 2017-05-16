@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should not render breadcrumbs with one element 1`] = `
+<h2
+  className="navbar-context-title"
+>
+  <OrganizationHelmet
+    organization={null}
+    title="My Project"
+  />
+  <span>
+    <span
+      className="navbar-context-title-qualifier little-spacer-right"
+    >
+      <QualifierIcon
+        qualifier="TRK"
+      />
+    </span>
+    <Link
+      className="link-base-color"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      title="My Project"
+      to={
+        Object {
+          "pathname": "/dashboard",
+          "query": Object {
+            "id": "my-project",
+          },
+        }
+      }
+    >
+      <strong>
+        My Project
+      </strong>
+    </Link>
+  </span>
+</h2>
+`;
+
+exports[`should render organization 1`] = `
+<h2
+  className="navbar-context-title"
+>
+  <OrganizationHelmet
+    organization={
+      Object {
+        "key": "foo",
+        "name": "The Foo Organization",
+      }
+    }
+    title="My Project"
+  />
+  <span>
+    <span
+      className="navbar-context-title-qualifier little-spacer-right"
+    >
+      <QualifierIcon
+        qualifier="TRK"
+      />
+    </span>
+    <OrganizationLink
+      className="link-base-color"
+      organization={
+        Object {
+          "key": "foo",
+          "name": "The Foo Organization",
+        }
+      }
+    >
+      The Foo Organization
+    </OrganizationLink>
+    <span
+      className="slash-separator"
+    />
+  </span>
+  <span>
+    <Link
+      className="link-base-color"
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      title="My Project"
+      to={
+        Object {
+          "pathname": "/dashboard",
+          "query": Object {
+            "id": "my-project",
+          },
+        }
+      }
+    >
+      <strong>
+        My Project
+      </strong>
+    </Link>
+  </span>
+</h2>
+`;

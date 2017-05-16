@@ -1,0 +1,16 @@
+.tags-list {
+  white-space: nowrap;
+}
+
+.tags-list i::before {
+  font-size: 12px;
+}
+
+.tags-list span {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  max-width: 220px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
