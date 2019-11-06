@@ -14,7 +14,7 @@
   <properties>
     <category>*</category>
     <skipIts>false</skipIts>
-    <jetty.version>9.3.11.v20160721</jetty.version>
+    <jetty.version>9.4.22.v20191022</jetty.version>
   </properties>
 
   <dependencies>
