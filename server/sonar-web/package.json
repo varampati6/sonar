@@ -19,7 +19,7 @@
     "escape-html": "1.0.3",
     "handlebars": "2.0.0",
     "history": "3.3.0",
-    "jquery": "2.2.0",
+    "jquery": "3.5.0",
     "keymaster": "1.6.2",
     "lodash": "4.6.1",
     "moment": "2.10.6",
