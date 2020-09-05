@@ -17,7 +17,7 @@
     "d3-selection": "1.0.5",
     "d3-shape": "1.0.6",
     "escape-html": "1.0.3",
-    "handlebars": "2.0.0",
+    "handlebars": "4.5.3",
     "history": "3.3.0",
     "jquery": "2.2.0",
     "keymaster": "1.6.2",
