@@ -75,7 +75,7 @@
 
     <protobuf.version>3.0.0-beta-2</protobuf.version>
 
-    <hazelcast.version>3.8</hazelcast.version>
+    <hazelcast.version>3.12.13</hazelcast.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.min.version>3.2</maven.min.version>
